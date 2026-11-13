@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Global Language Academy</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Literata:wght@400;600&display=swap">
+<style>
+:root{--bg:#EDF2F6;--surf:#fff;--ink:#0E2740;--mut:#566B80;--line:#CBD6E0;--acc:#2447D1;--accink:#fff;--gold:#E8A71D;--ok:#1C8A55;--bad:#C2362F;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0B1623;--surf:#12233A;--ink:#E8EEF5;--mut:#98ABBF;--line:#243B57;--acc:#7C97FF;--accink:#0B1623;--gold:#F2B632;--ok:#4CC58A;--bad:#FF7A72}}
+:root[data-theme="dark"]{--bg:#0B1623;--surf:#12233A;--ink:#E8EEF5;--mut:#98ABBF;--line:#243B57;--acc:#7C97FF;--accink:#0B1623;--gold:#F2B632;--ok:#4CC58A;--bad:#FF7A72}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 Literata,Georgia,"Noto Serif",serif}
+h1,h2,h3,button,.brand,nav{font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif}
+header{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--line);background:var(--surf);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--surf);z-index:10}
+.brand{font-weight:800;font-size:19px;letter-spacing:-.01em}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav button{border:0;background:none;color:var(--mut);font-weight:700;font-size:15px;padding:8px 12px;border-radius:8px;cursor:pointer}
+nav button[aria-current=true]{background:var(--acc);color:var(--accink)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+main{max-width:1000px;margin:0 auto;padding:28px 20px 60px}
+section[hidden]{display:none}
+h1{font-size:clamp(40px,8vw,84px);line-height:.98;letter-spacing:-.03em;font-weight:800;margin:8px 0 14px}
+h2{font-size:28px;margin:0 0 6px;letter-spacing:-.01em}
+p.lead{max-width:60ch;color:var(--mut);margin:0 0 24px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:22px 0}
+.tile{border:2px solid var(--line);background:var(--surf);color:var(--ink);border-radius:14px;padding:14px 12px;text-align:start;cursor:pointer;min-height:112px;display:flex;flex-direction:column;justify-content:space-between}
+.tile .g{font-size:30px;font-weight:800;line-height:1.1;font-family:"Bricolage Grotesque","Noto Sans Hebrew","Noto Sans",system-ui,sans-serif}
+.tile .n{font-size:14px;color:var(--mut);font-weight:700}
+.tile[aria-pressed=true]{border-color:var(--acc);box-shadow:inset 0 0 0 2px var(--acc)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 22px}
+.chip{border:2px solid var(--line);background:var(--surf);color:var(--ink);border-radius:99px;padding:6px 16px;font-weight:700;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.panel{background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:22px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{border:0;background:var(--acc);color:var(--accink);font-weight:700;font-size:16px;padding:10px 18px;border-radius:10px;cursor:pointer}
+.btn.alt{background:none;color:var(--ink);border:2px solid var(--line)}
+input[type=text],input[type=number]{font:inherit;padding:10px 12px;border:2px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);min-width:0}
+.q{font-size:34px;font-weight:700;margin:12px 0;font-family:"Bricolage Grotesque","Noto Sans Hebrew","Noto Sans",system-ui,sans-serif;unicode-bidi:plaintext}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.opt{border:2px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:12px;font-size:18px;cursor:pointer;text-align:start;font-family:"Bricolage Grotesque","Noto Sans Hebrew","Noto Sans",system-ui,sans-serif;font-weight:500}
+.opt.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 18%,transparent)}
+.opt.bad{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 18%,transparent)}
+.bar{height:8px;background:var(--line);border-radius:9px;overflow:hidden;margin:6px 0 14px}.bar i{display:block;height:100%;background:var(--gold);width:0;transition:width .3s}
+.mut{color:var(--mut);font-size:15px}
+.w{display:inline-block;padding:2px 8px;border-radius:6px;margin:3px;font-weight:600}.w.ok{background:color-mix(in srgb,var(--ok) 22%,transparent)}.w.bad{background:color-mix(in srgb,var(--bad) 22%,transparent)}
+.grid12{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.card{aspect-ratio:1.2;border:2px solid var(--line);border-radius:10px;background:var(--acc);color:var(--accink);font-size:18px;font-weight:700;cursor:pointer;padding:4px;overflow-wrap:anywhere}
+.card.up{background:var(--bg);color:var(--ink)}.card.done{background:color-mix(in srgb,var(--ok) 22%,var(--bg));color:var(--ink);border-color:var(--ok)}
+ul.todo{padding-left:20px;margin:8px 0}ul.todo li{margin:6px 0}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+textarea{font:inherit;padding:10px 12px;border:2px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);width:100%;min-width:0}
+.log{max-height:380px;overflow:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.m{padding:10px 14px;border-radius:12px;max-width:90%;white-space:pre-wrap}.m.u{align-self:flex-end;background:var(--acc);color:var(--accink)}.m.a{background:var(--bg);border:1px solid var(--line)}
+.post{border-top:1px solid var(--line);padding:14px 0}.post .cm{margin:8px 0 0 14px;padding-left:10px;border-left:3px solid var(--line)}
+select{font:inherit;padding:9px;border:2px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+video{width:100%;max-width:640px;border-radius:10px;background:#000}
+.qs{margin:18px 0}.qs .opt{margin:4px 0;display:block;width:100%}.opt.sel{border-color:var(--acc);box-shadow:inset 0 0 0 2px var(--acc)}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">Global Language Academy</div>
+  <nav id="nav"></nav>
+</header>
+<main>
+<section id="home">
+  <h1>Learn. Speak. Think. Achieve.</h1>
+  <p class="lead">Escolha o idioma que você quer estudar e o seu nível. Todo o treino, o tutor e o jogo seguem a sua escolha.</p>
+  <div class="tiles" id="tiles" role="group" aria-label="Idioma"></div>
+  <h2>Nível</h2>
+  <div class="chips" id="levels" role="group" aria-label="Nível"></div>
+  <div class="panel"><b id="stat">—</b><div class="mut" id="statsub"></div><div class="mut" id="cloud"></div>
+  <div class="row" style="margin-top:14px"><button class="btn" data-go="train">Começar o treino do dia</button><button class="btn alt" data-go="tutor">Falar com o tutor</button></div></div>
+</section>
+
+<section id="train" hidden>
+  <h2>Treino diário</h2>
+  <p class="lead">10 questões por dia, 365 dias. O dia define o conjunto de questões, então cada dia é diferente.</p>
+  <div class="row" style="margin-bottom:16px"><label for="day">Dia</label><input type="number" id="day" min="1" max="365" style="width:90px"><button class="btn" id="startQ">Iniciar</button></div>
+  <div class="panel" id="quiz"><span class="mut">Escolha o dia e toque em Iniciar.</span></div>
+</section>
+
+<section id="tutor" hidden>
+  <h2>Tutor de pronúncia e escrita</h2>
+  <p class="lead">Ouça a frase, repita falando ou digitando e veja palavra por palavra o que acertou.</p>
+  <div class="panel">
+    <div class="q" id="phrase"></div><div class="mut" id="phrasePt"></div>
+    <div class="row" style="margin:14px 0"><button class="btn alt" id="say">Ouvir</button><button class="btn alt" id="mic">Falar</button><button class="btn alt" id="nextP">Outra frase</button></div>
+    <div class="row"><input type="text" id="ans" style="flex:1" placeholder="Digite ou fale a frase" aria-label="Sua resposta"><button class="btn" id="check">Avaliar</button></div>
+    <div id="fb" style="margin-top:16px" aria-live="polite"></div>
+  </div>
+</section>
+
+<section id="game" hidden>
+  <h2>Jogo da memória</h2>
+  <p class="lead">Encontre os pares: palavra no idioma escolhido e tradução em português.</p>
+  <div class="row" style="margin-bottom:12px"><button class="btn" id="newGame">Novo jogo</button><span class="mut" id="gstat"></span></div>
+  <div class="grid12" id="board"></div>
+</section>
+
+<section id="ai" hidden>
+  <h2>Tutor com IA</h2>
+  <p class="lead">Converse no idioma escolhido. O tutor corrige gramática, ortografia e vocabulário, explica o erro em português e mostra a forma mais natural.</p>
+  <div class="panel"><div class="log" id="aiLog" aria-live="polite"></div>
+  <div class="row"><input type="text" id="aiIn" style="flex:1" aria-label="Mensagem para o tutor"><button class="btn alt" id="aiMic">Falar</button><button class="btn" id="aiSend">Enviar</button></div>
+  <div class="mut" id="aiNote" style="margin-top:10px"></div></div>
+</section>
+<section id="sim" hidden>
+  <h2>Simulado</h2>
+  <p class="lead">Questões novas a cada simulado, no estilo das provas de proficiência, no idioma e nível escolhidos. É prática, não uma prova oficial.</p>
+  <div class="row" style="margin-bottom:14px"><button class="btn" id="genSim">Gerar simulado de 10 questões</button></div>
+  <div class="panel" id="simBox"><span class="mut">Toque em Gerar para começar.</span></div>
+</section>
+<section id="lessons" hidden>
+  <h2>Aulas</h2>
+  <p class="lead">Vídeos gravados pelos professores e links das aulas ao vivo, do idioma que você escolheu.</p>
+  <div id="lessonList" class="panel"></div>
+</section>
+<section id="comm" hidden>
+  <h2>Comunidade</h2>
+  <p class="lead">Pergunte, compartilhe dicas e responda outros estudantes do mesmo idioma.</p>
+  <div class="panel"><textarea id="postIn" rows="3" aria-label="Nova publicação" placeholder="Escreva sua dúvida ou dica"></textarea>
+  <div class="row" style="margin-top:10px"><button class="btn" id="postBtn">Publicar</button><span class="mut" id="commNote"></span></div></div>
+  <div id="posts"></div>
+</section>
+<section id="admin" hidden>
+  <h2>Painel do professor</h2>
+  <div class="panel" id="adminBox"></div>
+</section>
+<section id="roadmap" hidden>
+  <h2>Próximas etapas</h2>
+  <p class="lead">Esta versão é o núcleo funcional do aluno. O que depende de servidor ainda precisa ser construído.</p>
+  <div class="panel">
+    <b>Já funciona aqui</b>
+    <ul class="todo"><li>7 idiomas, níveis A1 a C2, hebraico da direita para a esquerda</li><li>Treino diário de 10 questões para 365 dias</li><li>Pronúncia: ouvir e falar (depende do navegador) com avaliação por palavra</li><li>Jogo da memória e progresso salvo no aparelho</li></ul>
+    <b>Também funciona (ao abrir no claude.ai)</b>
+    <ul class="todo"><li>Tutor com IA por texto e voz, com correção e explicação em português</li><li>Simulados novos a cada vez, em qualquer idioma e nível</li><li>Progresso na conta, comunidade com respostas, aulas em vídeo e links de aulas ao vivo, painel do professor</li></ul>
+    <b>Ainda não existe</b>
+    <ul class="todo"><li>Videoconferência dentro da plataforma (hoje o professor publica um link do Meet ou Zoom)</li><li>Análise real de fonemas e entonação a partir do áudio (o tutor avalia o texto transcrito)</li><li>Simulados oficiais com correção certificada e vídeos acima de 20 MB</li></ul>
+  </div>
+</section>
+</main>
+<script>
+var PT="olá|obrigado|água|casa|livro|amigo|comida|tempo|cidade|escola|família|trabalho".split("|");
+var L=[
+{id:"en",n:"Inglês",g:"Hello",c:"en-US",w:"hello|thank you|water|house|book|friend|food|time|city|school|family|work",p:"I want to learn this language.",pt:"Eu quero aprender este idioma."},
+{id:"it",n:"Italiano",g:"Ciao",c:"it-IT",w:"ciao|grazie|acqua|casa|libro|amico|cibo|tempo|città|scuola|famiglia|lavoro",p:"Voglio imparare questa lingua.",pt:"Eu quero aprender este idioma."},
+{id:"es",n:"Espanhol",g:"Hola",c:"es-ES",w:"hola|gracias|agua|casa|libro|amigo|comida|tiempo|ciudad|escuela|familia|trabajo",p:"Quiero aprender este idioma.",pt:"Eu quero aprender este idioma."},
+{id:"fr",n:"Francês",g:"Bonjour",c:"fr-FR",w:"bonjour|merci|eau|maison|livre|ami|nourriture|temps|ville|école|famille|travail",p:"Je veux apprendre cette langue.",pt:"Eu quero aprender este idioma."},
+{id:"de",n:"Alemão",g:"Hallo",c:"de-DE",w:"hallo|danke|Wasser|Haus|Buch|Freund|Essen|Zeit|Stadt|Schule|Familie|Arbeit",p:"Ich möchte diese Sprache lernen.",pt:"Eu quero aprender este idioma."},
+{id:"el",n:"Grego",g:"Γεια σου",c:"el-GR",w:"γεια σου|ευχαριστώ|νερό|σπίτι|βιβλίο|φίλος|φαγητό|χρόνος|πόλη|σχολείο|οικογένεια|δουλειά",p:"Θέλω να μάθω αυτή τη γλώσσα.",pt:"Eu quero aprender este idioma."},
+{id:"he",n:"Hebraico",g:"שלום",c:"he-IL",w:"שלום|תודה|מים|בית|ספר|חבר|אוכל|זמן|עיר|בית ספר|משפחה|עבודה",p:"אני רוצה ללמוד את השפה הזאת.",pt:"Eu quero aprender este idioma."}
+];
+L.forEach(function(l){l.w=l.w.split("|")});
+var LV=["A1","A2","B1","B2","C1","C2"];
+var S={li:0,lv:0,tab:"home"};var store={done:{}};
+try{var raw=localStorage.getItem("gla");if(raw)store=JSON.parse(raw)}catch(e){}
+function save(){try{localStorage.setItem("gla",JSON.stringify(store))}catch(e){}}
+function $(i){return document.getElementById(i)}
+function lang(){return L[S.li]}
+function dirOf(){return lang().id==="he"?"rtl":"ltr"}
+function rng(s){return function(){s|=0;s=s+0x6D2B79F5|0;var t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function shuffle(a,r){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(r()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function norm(s){return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f\u0591-\u05C7]/g,"").replace(/[^\p{L}\s]/gu," ").replace(/\s+/g," ").trim()}
+
+/* navegação */
+var TABS=[["home","Início"],["train","Treino"],["tutor","Pronúncia"],["ai","Tutor IA"],["sim","Simulado"],["lessons","Aulas"],["comm","Comunidade"],["game","Jogo"],["admin","Professor"],["roadmap","Próximas etapas"]];
+function go(t){S.tab=t;TABS.forEach(function(x){$(x[0]).hidden=x[0]!==t});
+ Array.prototype.forEach.call($("nav").children,function(b){b.setAttribute("aria-current",b.dataset.t===t)});
+ if(t==="tutor")newPhrase();if(t==="game")newGame();scrollTo(0,0)}
+TABS.forEach(function(x){var b=document.createElement("button");b.textContent=x[1];b.dataset.t=x[0];b.onclick=function(){go(x[0])};$("nav").appendChild(b)});
+document.addEventListener("click",function(e){var g=e.target.getAttribute&&e.target.getAttribute("data-go");if(g)go(g)});
+
+/* início */
+function drawHome(){
+ $("tiles").innerHTML="";
+ L.forEach(function(l,i){var b=document.createElement("button");b.className="tile";b.setAttribute("aria-pressed",i===S.li);
+  b.innerHTML='<span class="g" dir="auto"></span><span class="n"></span>';b.firstChild.textContent=l.g;b.lastChild.textContent=l.n;
+  b.onclick=function(){S.li=i;drawHome()};$("tiles").appendChild(b)});
+ $("levels").innerHTML="";
+ LV.forEach(function(v,i){var b=document.createElement("button");b.className="chip";b.textContent=v;b.setAttribute("aria-pressed",i===S.lv);
+  b.onclick=function(){S.lv=i;drawHome()};$("levels").appendChild(b)});
+ var n=Object.keys(store.done).filter(function(k){return k.indexOf(lang().id+"-")===0}).length;
+ $("stat").textContent=lang().n+", nível "+LV[S.lv];
+ $("statsub").textContent=n?n+" treino(s) concluído(s) neste idioma.":"Nenhum treino concluído neste idioma ainda."}
+
+/* treino */
+var Q=[],qi=0,score=0;
+function dayOfYear(){var d=new Date();return Math.floor((d-new Date(d.getFullYear(),0,0))/864e5)}
+$("day").value=Math.min(365,dayOfYear());
+$("startQ").onclick=function(){
+ var day=Math.max(1,Math.min(365,parseInt($("day").value)||1));$("day").value=day;
+ var r=rng(day*31+S.li*997+S.lv);var idx=shuffle(PT.map(function(_,i){return i}),r).slice(0,10);
+ Q=idx.map(function(i){return{i:i,r:r}});Q.day=day;qi=0;score=0;showQ()};
+function showQ(){
+ var box=$("quiz"),l=lang();
+ if(qi>=10){store.done[l.id+"-"+Q.day]=score;save();drawHome();
+  box.innerHTML="<h3>Resultado: "+score+" de 10</h3><p class=mut>"+(score>=8?"Excelente. Tente o próximo dia.":"Repita amanhã e compare o resultado.")+"</p>";return}
+ var q=Q[qi],mode=S.lv<2?0:S.lv<4?1:2,r=q.r;
+ var pool=shuffle(PT.map(function(_,i){return i}).filter(function(i){return i!==q.i}),r).slice(0,3);
+ var opts=shuffle([q.i].concat(pool),r);
+ var h='<div class="bar"><i style="width:'+qi*10+'%"></i></div><div class="mut">Questão '+(qi+1)+' de 10</div>';
+ var ask=mode===0?l.w[q.i]:PT[q.i];
+ h+='<div class="q" dir="'+(mode===0?dirOf():"ltr")+'"></div>';
+ if(mode===2)h+='<div class="row"><input type="text" id="typed" style="flex:1" aria-label="Resposta" dir="'+dirOf()+'" placeholder="Escreva em '+l.n+'"><button class="btn" id="sendT">Responder</button></div>';
+ else h+='<div class="opts" id="opts"></div>';
+ h+='<div id="qfb" class="mut" style="margin-top:12px" aria-live="polite"></div>';
+ box.innerHTML=h;box.querySelector(".q").textContent=ask;
+ function done(ok){if(ok)score++;$("qfb").textContent=ok?"Correto.":"Resposta certa: "+(mode===0?PT[q.i]:l.w[q.i]);
+  setTimeout(function(){qi++;showQ()},ok?600:1400)}
+ if(mode===2){$("sendT").onclick=function(){this.disabled=true;done(norm($("typed").value)===norm(l.w[q.i]))};
+  $("typed").onkeydown=function(e){if(e.key==="Enter")$("sendT").click()}}
+ else opts.forEach(function(o){var b=document.createElement("button");b.className="opt";b.dir=mode===1?dirOf():"ltr";b.textContent=mode===0?PT[o]:l.w[o];
+  b.onclick=function(){Array.prototype.forEach.call($("opts").children,function(x){x.disabled=true});
+   b.classList.add(o===q.i?"ok":"bad");done(o===q.i)};$("opts").appendChild(b)})}
+
+/* tutor */
+function newPhrase(){var l=lang();$("phrase").dir=dirOf();$("phrase").textContent=l.p;$("phrasePt").textContent=l.pt;$("ans").dir=dirOf();$("ans").value="";$("fb").textContent=""}
+$("nextP").onclick=newPhrase;
+$("say").onclick=function(){if(!window.speechSynthesis){$("fb").textContent="Seu navegador não tem voz sintetizada.";return}
+ var u=new SpeechSynthesisUtterance(lang().p);u.lang=lang().c;u.rate=.85;speechSynthesis.cancel();speechSynthesis.speak(u)};
+var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+$("mic").onclick=function(){if(!SR){$("fb").textContent="Este navegador não reconhece fala. Digite a frase no campo abaixo.";return}
+ var r=new SR();r.lang=lang().c;$("fb").textContent="Ouvindo…";
+ r.onresult=function(e){$("ans").value=e.results[0][0].transcript;$("check").click()};
+ r.onerror=function(){$("fb").textContent="Não consegui ouvir. Verifique a permissão do microfone ou digite a frase."};
+ try{r.start()}catch(e){}};
+$("check").onclick=function(){var t=norm(lang().p).split(" "),u=norm($("ans").value).split(" ");
+ if(!$("ans").value.trim()){$("fb").textContent="Digite ou fale a frase primeiro.";return}
+ var hit=0,h="";t.forEach(function(w,i){var ok=u.indexOf(w)>-1;if(ok)hit++;h+='<span class="w '+(ok?"ok":"bad")+'"></span>'});
+ var pct=Math.round(hit/t.length*100);
+ $("fb").innerHTML="<b>"+pct+"% das palavras corretas</b><div dir='"+dirOf()+"'>"+h+"</div><div class=mut>"+(pct===100?"Muito bem. Tente de novo mais rápido.":"As palavras em vermelho faltaram ou estão diferentes. Ouça de novo e repita.")+"</div>";
+ var sp=$("fb").querySelectorAll(".w");t.forEach(function(w,i){sp[i].textContent=lang().p.split(/\s+/)[i]||w})};
+
+/* jogo */
+var first=null,lock=false,pairs=0,moves=0;
+function newGame(){var l=lang(),r=rng(Date.now()&0xffff);var ids=shuffle(PT.map(function(_,i){return i}),r).slice(0,6);
+ var cards=[];ids.forEach(function(i){cards.push({k:i,t:l.w[i],d:dirOf()});cards.push({k:i,t:PT[i],d:"ltr"})});
+ cards=shuffle(cards,r);pairs=0;moves=0;first=null;lock=false;$("gstat").textContent="";$("board").innerHTML="";
+ cards.forEach(function(c){var b=document.createElement("button");b.className="card";b.dir=c.d;b.setAttribute("aria-label","Carta virada para baixo");b.textContent="?";
+  b.onclick=function(){if(lock||b.classList.contains("up")||b.classList.contains("done"))return;
+   b.classList.add("up");b.textContent=c.t;
+   if(!first){first={b:b,k:c.k};return}
+   moves++;var f=first;first=null;
+   if(f.k===c.k){f.b.className=b.className="card done";if(++pairs===6)$("gstat").textContent="Concluído em "+moves+" jogadas."}
+   else{lock=true;setTimeout(function(){f.b.className=b.className="card";f.b.textContent=b.textContent="?";lock=false},900)}};
+  $("board").appendChild(b)})}
+$("newGame").onclick=newGame;
+
+/* ===== nuvem, IA, aulas, comunidade, admin ===== */
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+var CL={},LS=[],SC=[],PO=[],CM=[],hist=[],histLang=-1,voice=false,listening=false;
+var _save=save;save=function(){_save();syncCloud()};
+function avgSim(m){var v=Object.keys(m).map(function(k){return m[k]});return v.length?Math.round(v.reduce(function(a,b){return a+b},0)/v.length):0}
+function syncCloud(){if(!CL.db||!CL.uid)return;var sm=store.sim||{};
+ CL.db.collection("data/users/"+CL.uid).doc("progress").set({done:store.done,sim:sm}).catch(function(){});
+ CL.db.collection("scores").doc(CL.uid).set({n:Object.keys(store.done).length,sim:Object.keys(sm).length,avg:avgSim(sm),t:Date.now()}).catch(function(){})}
+function cloudNote(){$("cloud").textContent=CL.uid&&CL.db?"Progresso salvo na sua conta.":"Progresso salvo só neste aparelho. Abra no claude.ai com sua conta para salvar na nuvem."}
+async function loadCloud(){if(!CL.db||!CL.uid)return;try{var d=await CL.db.collection("data/users/"+CL.uid).doc("progress").get();
+ if(d.exists){var r=d.data();for(var k in (r.done||{}))if(!(k in store.done))store.done[k]=r.done[k];store.sim=Object.assign({},r.sim||{},store.sim||{});drawHome()}}catch(e){}}
+async function boot(){
+ if(!window.claude){cloudNote();return}
+ async function u(n){try{return await claude.use(n)}catch(e){return null}}
+ CL.user=await u("user");CL.db=await u("db");CL.sample=await u("sample");CL.assets=await u("assets");CL.dict=await u("dictation");
+ if(CL.user){try{CL.uid=await CL.user.id();CL.admin=await CL.user.canEdit()}catch(e){}}
+ cloudNote();loadCloud();setupDict();aiInit();
+ if(CL.db){
+  CL.db.collection("lessons").orderBy("t","desc").onSnapshot(function(s){LS=s.docs.map(function(d){return Object.assign({id:d.id},d.data())});drawLessons();drawAdmin()},function(){});
+  CL.db.collection("posts").orderBy("t","desc").limit(60).onSnapshot(function(s){PO=s.docs.map(function(d){return Object.assign({id:d.id},d.data())});drawPosts()},function(){});
+  CL.db.collection("comments").orderBy("t").limit(500).onSnapshot(function(s){CM=s.docs.map(function(d){return Object.assign({id:d.id},d.data())});drawPosts()},function(){});
+  if(CL.admin)CL.db.collection("scores").onSnapshot(function(s){SC=s.docs.map(function(d){return d.data()});drawAdmin()},function(){})}
+ drawLessons();drawPosts();drawAdmin()}
+
+/* tutor IA */
+function addMsg(c,t){var m=el("div","m "+c,t);$("aiLog").appendChild(m);$("aiLog").scrollTop=1e9;return m}
+function aiInit(){if(histLang!==S.li){histLang=S.li;hist=[];$("aiLog").innerHTML="";addMsg("a","Olá! Escreva uma frase em "+lang().n+" e eu corrijo. Se preferir, peça um tema para conversar.")}
+ $("aiNote").textContent=CL.sample?"Idioma: "+lang().n+", nível "+LV[S.lv]+". O reconhecimento de voz pode seguir o idioma do navegador. O tutor avalia o texto transcrito, não o som.":"O tutor com IA funciona quando a página é aberta no claude.ai.";
+ $("aiSend").disabled=!CL.sample}
+async function aiSend(){var t=$("aiIn").value.trim();if(!t||!CL.sample)return;
+ hist.push({role:"user",content:(voice?"[voz] ":"")+t});voice=false;addMsg("u",t);$("aiIn").value="";var box=addMsg("a","…");
+ var l=lang(),sys="Você é um tutor particular de "+l.n+" para um aluno brasileiro, nível "+LV[S.lv]+" (QCER). Responda no idioma "+l.n+", em nível adequado, e explique correções em português. Se a mensagem do aluno tiver erros, comece com três linhas: Correção (frase corrigida), Por quê (regra curta), Mais natural (como um nativo diria). Depois continue a conversa com uma pergunta curta. Se a mensagem começar com [voz], veio de reconhecimento de fala: aponte possíveis problemas de pronúncia deduzidos do texto e avise que você não ouviu o áudio. No máximo 120 palavras. Hebraico sem niqqud.";
+ var m=hist.slice(-10).map(function(x){return{role:x.role,content:x.content}});while(m.length&&m[0].role!=="user")m.shift();m[0].content=sys+"\n\n"+m[0].content;
+ try{var r=await CL.sample(m,{cache:false,onText:function(x){box.textContent=x.text}});box.textContent=r.text;hist.push({role:"assistant",content:r.text})}
+ catch(e){hist.pop();box.textContent=e&&e.code==="rate_limited"?"Muitas mensagens seguidas. Aguarde um pouco.":e&&e.code==="not_granted"?"Permissão negada. Recarregue a página para tentar de novo.":"Não consegui responder agora. Tente novamente."}}
+$("aiSend").onclick=aiSend;$("aiIn").onkeydown=function(e){if(e.key==="Enter")aiSend()};
+function setupDict(){var d=CL.dict;if(!d){$("aiMic").hidden=true;return}
+ d.onFinal(function(x){$("aiIn").value=($("aiIn").value+" "+x.text).trim();voice=true});
+ d.onState(function(x){listening=x.state==="listening";$("aiMic").textContent=listening?"Parar":"Falar"});
+ $("aiMic").onclick=function(){if(listening)d.stop();else d.start().catch(function(){})}}
+
+/* simulado */
+$("genSim").onclick=async function(){var b=this,box=$("simBox");
+ if(!CL.sample){box.textContent="O simulado funciona quando a página é aberta no claude.ai.";return}
+ var l=lang();b.disabled=true;box.textContent="Gerando simulado…";
+ try{var qs=await CL.sample.json("Crie um simulado de 10 questões de múltipla escolha de "+l.n+", nível "+LV[S.lv]+", no estilo de provas de proficiência (gramática, vocabulário e interpretação de textos curtos). Responda somente com JSON: um array de 10 objetos no formato {\"q\": enunciado em "+l.n+", \"o\": [4 alternativas], \"a\": índice da correta de 0 a 3, \"w\": explicação curta em português}. Varie os temas.",{cache:false});
+  qs=(Array.isArray(qs)?qs:[]).filter(function(x){return x&&typeof x.q==="string"&&Array.isArray(x.o)&&x.o.length>1&&typeof x.a==="number"});
+  if(qs.length<3)throw 0;simRun(qs)}catch(e){box.textContent="Não foi possível gerar agora. Tente novamente em instantes."}
+ b.disabled=false};
+function simRun(qs){var box=$("simBox"),pick=[];box.innerHTML="";
+ qs.forEach(function(q,i){var d=el("div","qs");var h=el("div","q",(i+1)+". "+q.q);h.style.fontSize="22px";h.dir=dirOf();d.appendChild(h);
+  q.o.forEach(function(o,j){var b=el("button","opt",String(o));b.dir=dirOf();b.onclick=function(){pick[i]=j;Array.prototype.forEach.call(d.querySelectorAll(".opt"),function(x){x.classList.remove("sel")});b.classList.add("sel")};d.appendChild(b)});
+  d.appendChild(el("div","mut"));box.appendChild(d)});
+ var fin=el("button","btn","Corrigir simulado");fin.onclick=function(){var ok=0;
+  Array.prototype.forEach.call(box.querySelectorAll(".qs"),function(d,i){var q=qs[i],bs=d.querySelectorAll(".opt");
+   Array.prototype.forEach.call(bs,function(b){b.disabled=true});
+   if(bs[q.a])bs[q.a].classList.add("ok");if(pick[i]===q.a)ok++;else if(bs[pick[i]])bs[pick[i]].classList.add("bad");
+   d.lastChild.textContent=q.w||""});
+  var pct=Math.round(ok/qs.length*100);fin.disabled=true;fin.textContent="Resultado: "+ok+" de "+qs.length+" ("+pct+"%)";
+  store.sim=store.sim||{};store.sim[lang().id+"-"+Date.now()]=pct;save()};
+ box.appendChild(fin)}
+
+/* aulas */
+function drawLessons(){var box=$("lessonList");box.innerHTML="";var a=LS.filter(function(x){return x.lang===lang().id});
+ if(!a.length){box.appendChild(el("span","mut",CL.db?"Ainda não há aulas de "+lang().n+". Os professores publicam no painel do professor.":"As aulas aparecem quando a página é aberta no claude.ai."));return}
+ a.forEach(function(x){var d=el("div","post");d.appendChild(el("b",null,x.title||"Aula"));
+  if(x.kind==="live"&&/^https:\/\//.test(x.link||"")){var p=el("p");var l=el("a",null,"Entrar na aula ao vivo");l.href=x.link;l.target="_blank";l.rel="noopener noreferrer";p.appendChild(l);d.appendChild(p)}
+  else if(x.aid&&/^[0-9a-f]{32}$/.test(x.aid)){var v=document.createElement("video");v.controls=true;v.preload="metadata";v.src="/_blob/"+x.aid;d.appendChild(v)}
+  if(CL.admin){var r=el("button","btn alt","Excluir");r.style.marginTop="8px";r.onclick=function(){CL.db.collection("lessons").doc(x.id).delete()};d.appendChild(r)}
+  box.appendChild(d)})}
+
+/* comunidade */
+async function drawPosts(){var box=$("posts");box.innerHTML="";if(!CL.db){box.appendChild(el("p","mut","A comunidade aparece quando a página é aberta no claude.ai."));return}
+ var a=PO.filter(function(p){return p.lang===lang().id}),ids=[];PO.concat(CM).forEach(function(x){if(x.u&&ids.indexOf(x.u)<0)ids.push(x.u)});
+ var pr={};try{if(CL.user)pr=await CL.user.profiles(ids)}catch(e){}
+ function nm(id){return(pr[id]&&pr[id].name)||"Aluno"}
+ box.innerHTML="";if(!a.length)box.appendChild(el("p","mut","Nenhuma publicação em "+lang().n+" ainda. Comece a conversa."));
+ a.forEach(function(p){var d=el("div","post");d.appendChild(el("b",null,nm(p.u)));d.appendChild(el("p",null,p.text||""));
+  CM.filter(function(c){return c.p===p.id}).forEach(function(c){var m=el("div","cm");m.appendChild(el("b",null,nm(c.u)+": "));m.appendChild(document.createTextNode(c.text||""));d.appendChild(m)});
+  var r=el("div","row");r.style.marginTop="8px";var i=el("input");i.type="text";i.placeholder="Responder";i.setAttribute("aria-label","Responder");i.style.flex="1";
+  var s=el("button","btn alt","Enviar");s.onclick=function(){var t=i.value.trim();if(!t||!CL.uid)return;CL.db.collection("comments").add({p:p.id,u:CL.uid,text:t,t:Date.now()});i.value=""};
+  r.appendChild(i);r.appendChild(s);
+  if(p.u===CL.uid||CL.admin){var x=el("button","btn alt","Excluir");x.onclick=function(){CM.filter(function(c){return c.p===p.id}).forEach(function(c){CL.db.collection("comments").doc(c.id).delete()});CL.db.collection("posts").doc(p.id).delete()};r.appendChild(x)}
+  d.appendChild(r);box.appendChild(d)})}
+$("postBtn").onclick=function(){var t=$("postIn").value.trim();if(!t)return;
+ if(!CL.db||!CL.uid){$("commNote").textContent="Entre no claude.ai para publicar.";return}
+ CL.db.collection("posts").add({u:CL.uid,lang:lang().id,text:t,t:Date.now()}).then(function(){$("postIn").value="";$("commNote").textContent=""}).catch(function(){$("commNote").textContent="Não foi possível publicar. Tente de novo."})};
+
+/* admin */
+function drawAdmin(){var b=$("adminBox");b.innerHTML="";
+ if(!CL.admin){b.appendChild(el("span","mut","Área para professores e administradores desta página."));return}
+ var n=SC.length,tr=SC.reduce(function(a,x){return a+(x.n||0)},0),sims=SC.filter(function(x){return x.sim});
+ var av=sims.length?Math.round(sims.reduce(function(a,x){return a+(x.avg||0)},0)/sims.length):0;
+ b.appendChild(el("h3",null,"Visão geral"));b.appendChild(el("p",null,n+" aluno(s) com progresso, "+tr+" treino(s) concluído(s), média nos simulados: "+av+"%."));
+ b.appendChild(el("h3",null,"Publicar aula"));
+ var f=el("div","row");f.style.cssText="display:grid;gap:10px;max-width:480px";
+ var t=el("input");t.type="text";t.placeholder="Título da aula";t.setAttribute("aria-label","Título");
+ var lg=el("select");lg.setAttribute("aria-label","Idioma");L.forEach(function(x,i){var o=el("option",null,x.n);o.value=x.id;if(i===S.li)o.selected=true;lg.appendChild(o)});
+ var k=el("select");k.setAttribute("aria-label","Tipo");[["video","Vídeo gravado"],["live","Link de aula ao vivo"]].forEach(function(x){var o=el("option",null,x[1]);o.value=x[0];k.appendChild(o)});
+ var fi=el("input");fi.type="file";fi.accept="video/*";fi.setAttribute("aria-label","Arquivo de vídeo");
+ var lk=el("input");lk.type="text";lk.placeholder="https://… (link da aula ao vivo)";lk.setAttribute("aria-label","Link");lk.hidden=true;
+ k.onchange=function(){fi.hidden=k.value==="live";lk.hidden=k.value!=="live"};
+ var go2=el("button","btn","Publicar aula"),msg=el("div","mut");
+ go2.onclick=async function(){if(!t.value.trim()){msg.textContent="Digite o título.";return}
+  var d={title:t.value.trim(),lang:lg.value,kind:k.value,t:Date.now()};
+  try{if(k.value==="live"){if(!/^https:\/\//.test(lk.value.trim())){msg.textContent="Use um link que comece com https://";return}d.link=lk.value.trim()}
+   else{if(!CL.assets||!fi.files[0]){msg.textContent=CL.assets?"Escolha o arquivo de vídeo (até 20 MB).":"Upload indisponível para esta conta.";return}
+    msg.textContent="Enviando vídeo…";d.aid=(await CL.assets.upload(fi.files[0])).id}
+   await CL.db.collection("lessons").add(d);msg.textContent="Aula publicada.";t.value=""}
+  catch(e){msg.textContent="Não foi possível publicar. Verifique o arquivo (vídeo de até 20 MB) e tente de novo."}};
+ [t,lg,k,fi,lk,go2,msg].forEach(function(x){f.appendChild(x)});b.appendChild(f);
+ b.appendChild(el("p","mut","Para remover aulas ou publicações, use as abas Aulas e Comunidade."))}
+
+var _go=go;go=function(t){_go(t);if(t==="ai")aiInit();if(t==="lessons")drawLessons();if(t==="comm")drawPosts();if(t==="admin")drawAdmin()};
+boot();
+
+drawHome();go("home");
+</script>
+</body>
+</html>
